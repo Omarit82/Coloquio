@@ -30,6 +30,7 @@ CREATE TABLE `productos` (
   `descripcion` text DEFAULT NULL,
   `precio` decimal(10,2) NOT NULL,
   `stock` int(11) DEFAULT 0,
+  `categoria` varchar(50) NOT NULL DEFAULT 'General',
   `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -41,7 +42,7 @@ CREATE TABLE `productos` (
 
 LOCK TABLES `productos` WRITE;
 /*!40000 ALTER TABLE `productos` DISABLE KEYS */;
-INSERT INTO `productos` VALUES (1,'Alfajor Milka','Alfajor de chocolate con mousse',2500.00,150,'2026-11-04 00:15:52'),(2,'Doritos','Paquete de Snacks de 150gr',3250.00,100,'2026-11-04 00:18:27'),(3,'Talitas','Paquete de galletitas saladas',1850.00,75,'2026-11-04 00:19:02'),(4,'Mogul','Paquete de gomitas',2500.00,50,'2026-11-04 00:19:37'),(5,'Alfajor GOAT','Alfajor de chocolate con corazon de bon o bon',3000.00,25,'2026-11-04 00:20:37');
+INSERT INTO `productos` VALUES (1,'Alfajor Milka','Alfajor de chocolate con mousse',2500.00,150,'Golosinas','2026-11-04 00:15:52'),(2,'Doritos','Paquete de Snacks de 150gr',3250.00,100,'Snacks','2026-11-04 00:18:27'),(3,'Talitas','Paquete de galletitas saladas',1850.00,75,'Galletitas','2026-11-04 00:19:02'),(4,'Mogul','Paquete de gomitas',2500.00,50,'Golosinas','2026-11-04 00:19:37'),(5,'Alfajor GOAT','Alfajor de chocolate con corazon de bon o bon',3000.00,25,'Golosinas','2026-11-04 00:20:37');
 /*!40000 ALTER TABLE `productos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

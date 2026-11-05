@@ -20,4 +20,24 @@ function conexionDB() {
     });
 }
 
-module.exports = conexionDB;
+function execute(query, params) {
+    return new Promise((resolve, reject) => {
+        const connection = db.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: '',
+            database: 'kiosko'  
+        });
+
+        connection.execute(query, params, (error, results) => {
+            connection.end();
+            if (error) {
+                reject(error);
+            } else {
+                resolve(results);
+            }
+        });
+    });
+}
+
+module.exports = {conexionDB, execute};
