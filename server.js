@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const conexionDB = require('./db');
+const productosRouter = require('./routes/productos');
 
 /*Definimos el puerto */
 const PORT = 3000;
@@ -10,10 +11,11 @@ const router = express.Router();
 conexionDB();
 
 const app = express();
-/*Llamamos el middleware para la utilizacion de JSON */
 app.use(express.json());
 /*Ruta publica para servir archivos estaticos */
 app.use(express.static(path.join(__dirname, 'public')));
+/*Usamos el router */
+app.use('productos',productosRouter);
 
 /*Escuchamos en el puerto 3000 */
 app.listen(3000, () => {
