@@ -48,13 +48,9 @@ const obtenerPorId = async (id) => {
 }
 
 /**Funcion para actualizar un producto en la base de datos */
-const actualizarProducto = async (id, nuevo, viejo) => {
+const actualizarProducto = async (id, nuevo) => {
     try {
-        const nombre = nuevo.nombre || viejo.nombre;
-        const descripcion = nuevo.descripcion || viejo.descripcion;
-        const precio = nuevo.precio ?? viejo.precio;
-        const stock = nuevo.stock ?? viejo.stock;
-        const categoria = nuevo.categoria || viejo.categoria;
+        const { nombre, descripcion, precio, stock, categoria } = nuevo;
         const query = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, stock = ?, categoria = ? WHERE id = ?';
         const resultado = await db.execute(query, [nombre, descripcion, precio, stock, categoria, id]);
         return resultado;

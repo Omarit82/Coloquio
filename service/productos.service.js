@@ -37,7 +37,14 @@ const actualizarProducto = async (id, nuevo) => {
     if (!productoExistente || productoExistente == null) {
         throw new Error("Producto no encontrado");
     }else{
-        return await repositorio.actualizarProducto(id, nuevo, productoExistente);
+       const productoAActualizar = {
+            nombre: nuevo.nombre || productoExistente.nombre,
+            descripcion: nuevo.descripcion || productoExistente.descripcion,
+            precio: (nuevo.precio !== undefined && nuevo.precio !== "") ? nuevo.precio : productoExistente.precio,
+            stock: (nuevo.stock !== undefined && nuevo.stock !== "") ? nuevo.stock : productoExistente.stock,
+            categoria: nuevo.categoria || productoExistente.categoria
+        };
+        return await repositorio.actualizarProducto(id, productoAActualizar);
     }
 }
 

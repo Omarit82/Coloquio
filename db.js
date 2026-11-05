@@ -1,43 +1,28 @@
 /**MANEJO DE LA CONEXION A LA BASE DE DATOS */
-const db = require('mysql2');
+const mysql = require('mysql2/promise');
 
+const pool = mysql.createPool({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'kiosko',
+    waitForConnections: true,
+    connectionLimit: 10
+});
 
-function conexionDB() {
-    /*Definimos la conexión a la db de MySQL */
-    const connection = db.createConnection({
-        host: 'localhost',
-        user: 'root',
-        password: '',
-        database: 'kiosko'
-    });
-    /*Conectamos a la db */
-    connection.connect((error) => {
-        if (error) {
-            console.error('Error en la conexion a la base de datos:', error);
-            return;
-        }
+const conexionDB = async () => {
+    try {
+        const conn = await pool.getConnection();
         console.log('Conexion exitosa a la base de datos MySQL');
-    });
-}
+        conn.release();
+    } catch (error) {
+        console.error('Error al conectar a la BD:', error.message);
+    }
+};
 
-function execute(query, params) {
-    return new Promise((resolve, reject) => {
-        const connection = db.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'kiosko'  
-        });
+const execute = async (query, params = []) => {
+    const [results] = await pool.execute(query, params);
+    return results;
+};
 
-        connection.execute(query, params, (error, results) => {
-            connection.end();
-            if (error) {
-                reject(error);
-            } else {
-                resolve(results);
-            }
-        });
-    });
-}
-
-module.exports = {conexionDB, execute};
+module.exports = { conexionDB, execute };
