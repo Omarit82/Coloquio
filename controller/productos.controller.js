@@ -44,7 +44,7 @@ const actualizarProducto = async(req, res) => {
     try {
         const productoActualizado = await service.actualizarProducto(req.params.id, req.body);
         if (productoActualizado) {
-            res.status(200).json({ mensaje: "Producto actualizado correctamente", producto: productoActualizado });
+            res.status(200).json({ mensaje: "Producto actualizado correctamente", informacion: productoActualizado });
         } else {
             res.status(404).json({ mensaje: "Producto no encontrado" });
         }
