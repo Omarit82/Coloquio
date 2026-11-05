@@ -37,13 +37,23 @@ const actualizarProducto = async (id, nuevo) => {
     if (!productoExistente || productoExistente == null) {
         throw new Error("Producto no encontrado");
     }else{
-        return await repositorio.actualizarProducto(id, nuevo);
+        return await repositorio.actualizarProducto(id, nuevo, productoExistente);
     }
+}
+
+const eliminarProducto = async (id) => {
+    /*Valido que el producto exista */
+    const productoExistente = await repositorio.obtenerPorId(id);
+    if (!productoExistente || productoExistente == null) {
+        throw new Error("Producto no encontrado");
+    }
+    return await repositorio.eliminarProducto(id);
 }
 
 module.exports = {
     cargarProducto,
     obtenerTodos,
     obtenerPorId,
-    actualizarProducto
+    actualizarProducto,
+    eliminarProducto
 }

@@ -7,7 +7,7 @@ const { execute } = require('../db.js');
 const cargarProducto = async (producto) => {
     try{
         /**deconstruimos el producto */
-        const { nombre, descripcion, precio, stock, categoria } = producto;
+        const { nombre, descripcion, precio, stock, categoria } = producto;        
         /**planteamos la consulta con ? */
         const query = 'INSERT INTO productos (nombre, descripcion, precio, stock, categoria) VALUES (?, ?, ?, ?, ?)';
         /**ejeutamos la consulta incluyendo los valores */
@@ -38,8 +38,9 @@ const obtenerTodos = async (categoria) => {
 /**Funcion para obtener un producto por ID de la base de datos */
 const obtenerPorId = async (id) => {
     try {
-        const producto = await db.execute('SELECT * FROM productos WHERE id = ?', [id]);
-        return producto;
+        const arreglo = await db.execute('SELECT * FROM productos WHERE id = ?', [parseInt(id)]);
+        console.log('Resultado de la consulta:', arreglo);
+        return arreglo.length>0?arreglo[0]:null;
     } catch (error) {
         console.error('Error al obtener el producto por ID de la base de datos:', error);
         throw new Error('Error al obtener el producto por ID de la base de datos');
@@ -47,9 +48,13 @@ const obtenerPorId = async (id) => {
 }
 
 /**Funcion para actualizar un producto en la base de datos */
-const actualizarProducto = async (id, nuevo) => {
+const actualizarProducto = async (id, nuevo, viejo) => {
     try {
-        const { nombre, descripcion, precio, stock, categoria } = nuevo;
+        const nombre = nuevo.nombre || viejo.nombre;
+        const descripcion = nuevo.descripcion || viejo.descripcion;
+        const precio = nuevo.precio ?? viejo.precio;
+        const stock = nuevo.stock ?? viejo.stock;
+        const categoria = nuevo.categoria || viejo.categoria;
         const query = 'UPDATE productos SET nombre = ?, descripcion = ?, precio = ?, stock = ?, categoria = ? WHERE id = ?';
         const resultado = await db.execute(query, [nombre, descripcion, precio, stock, categoria, id]);
         return resultado;
@@ -59,9 +64,23 @@ const actualizarProducto = async (id, nuevo) => {
     }
 }
 
+/*Funcion para eliminar un producto de la base de datos */
+const eliminarProducto = async (id) => {
+    try {
+        const query = 'DELETE FROM productos WHERE id = ?';
+        const resultado = await db.execute(query, [id]);
+        return resultado;
+    } catch (error) {
+        console.error('Error al eliminar el producto de la base de datos:', error);
+        throw new Error('Error al eliminar el producto de la base de datos');
+    }
+}
+
 module.exports = {
     cargarProducto,
     obtenerTodos,
     obtenerPorId,
-    actualizarProducto
+    actualizarProducto,
+    eliminarProducto
 }
+ 
